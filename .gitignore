@@ -377,7 +377,8 @@ MigrationBackup/
 FodyWeavers.xsd
 
 # VS Code files for those working on multiple tools
-.vscode/*
+.vscode/
+.idea/
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
@@ -394,9 +395,13 @@ FodyWeavers.xsd
 *.msm
 *.msp
 
-# JetBrains Rider
-*.sln.iml
-/test-results/
-/playwright-report/
-/blob-report/
-/playwright/.cache/
+# Playwright
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+html-report/
+videos/
+screenshots/
+.env
+auth/

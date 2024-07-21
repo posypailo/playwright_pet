@@ -1,5 +1,6 @@
 import { Locator, Page } from 'playwright-core';
-import { Link } from '../../pageelement/link';
+import { Link } from '../pageelement/link';
+import { BasePage } from './base.page';
 
 export enum PageElement {
     INSERT = 'Insert /',
@@ -13,33 +14,26 @@ export enum PageAction {
     TOOLBAR_BUTTON
 }
 
-export class Editor {
-    public readonly page: Page;
+export class Editor extends BasePage {
 
-    private readonly rootSelector = '[data-testid=ak-editor-fp-content-area]';
-
-    private $link!: Link;
+    protected rootSelector = '[data-testid=ak-editor-fp-content-area]';
 
     // protected table: Table;
 
     private inputSearchElementToInsert: Locator;
 
-    private textareaPageTitle: Locator;
+    public textareaPageTitle: Locator;
 
     private buttonPublish: Locator;
 
+    private buttonUpdate: Locator;
+
     constructor(page: Page) {
-        this.page = page;
+        super(page);
         this.inputSearchElementToInsert = this.page.locator('[data-testid=element-browser] input');
         this.textareaPageTitle = this.page.locator('[data-test-id=editor-title]');
-        this.buttonPublish = this.page.locator('[id=publish-button]');
-    }
-
-    public get link(): Link {
-        if (!this.$link) {
-            this.$link = new Link(this.page, this.rootSelector);
-        }
-        return this.$link;
+        this.buttonUpdate = this.page.locator('[data-testid="publish-modal-update-button"]');
+        this.buttonPublish = this.page.locator('[data-testid="publish-button"]')
     }
 
     private getButtonOnToolbar(element: PageElement): Locator {
@@ -47,7 +41,17 @@ export class Editor {
     }
 
     async publish() {
+
+        const responsePromise = this.page.waitForResponse('**/rest/api/content/**', {
+            timeout: 30000
+        });
         await this.buttonPublish.click();
+        const response = await (await responsePromise).json();
+        return response.id
+    }
+
+    async update() {
+        await this.buttonUpdate.click()
     }
 
     async add(element: PageElement, via: PageAction, inNewParagraph = true) {

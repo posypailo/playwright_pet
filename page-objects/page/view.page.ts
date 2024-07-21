@@ -1,22 +1,15 @@
 import { Locator, Page } from 'playwright';
-import { Link } from '../../pageelement/link';
+import { BasePage } from './base.page';
 
-export class Viewer {
-    public readonly page: Page;
-    private readonly rootSelector = '[data-test-id=confluence-main-content]';
-    private $link!: Link;
+export class Viewer extends BasePage {
+    protected rootSelector = '[data-test-id=confluence-main-content]';
     private buttonEdit: Locator;
+    public textareaPageTitle: Locator;
 
     constructor(page: Page) {
-        this.page = page;
+        super(page);
         this.buttonEdit = page.locator("[data-test-id='fabric-edit-button']");
-    }
-
-    public get link(): Link {
-        if (!this.$link) {
-            this.$link = new Link(this.page, this.rootSelector);
-        }
-        return this.$link;
+        this.textareaPageTitle = page.locator('[data-testid="title-text"]');
     }
 
     async clickButtonEdit() {

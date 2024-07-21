@@ -18,6 +18,7 @@ export class Link {
     private floatingToolbar: Locator;
     private inputLinkUrl: Locator;
     private inputLinkLabel: Locator;
+    private buttonInsert: Locator;
 
     constructor(page: Page, rootSelector: string = '') {
         this.page = page;
@@ -25,6 +26,7 @@ export class Link {
         this.floatingToolbar = this.page.locator('[aria-label="Floating Toolbar"]');
         this.inputLinkUrl = this.page.locator('input[data-testid="link-url"]');
         this.inputLinkLabel = this.page.locator('input[data-testid="link-label"]');
+        this.buttonInsert = this.page.locator('[data-testid="link-picker-insert-button"]');
     }
 
     async setURL(url: string, title?: string) {
@@ -34,7 +36,8 @@ export class Link {
             await this.inputLinkLabel.clear();
             await this.inputLinkLabel.fill(title);
         }
-        await this.page.keyboard.press('Enter');
+        // await this.page.keyboard.press('Enter');
+        await this.buttonInsert.click()
     }
 
     //can be used for indirect verification of a link title
@@ -48,35 +51,35 @@ export class Link {
         }
     }
 
-    async clickLabelOnToolbar(name: FloatingToolbar) {
-        await this.floatingToolbar.locator(`[aria-label^="${name}"]`).first().click();
-    }
+    // async clickLabelOnToolbar(name: FloatingToolbar) {
+    //     await this.floatingToolbar.locator(`[aria-label^="${name}"]`).first().click();
+    // }
 
-    async labelOnToolbarExists(name: FloatingToolbar): Promise<boolean> {
-        return this.floatingToolbar.locator(`[aria-label^="${name}"]`).isVisible();
-    }
+    // async labelOnToolbarExists(name: FloatingToolbar): Promise<boolean> {
+    //     return this.floatingToolbar.locator(`[aria-label^="${name}"]`).isVisible();
+    // }
 
     async getUrlLinkTitle(hrefText: string): Promise<any> {
         return this.root.locator(`p>a[href='${hrefText}']`).textContent();
     }
 
-    async urlLinkTitleExists(hrefText: string): Promise<boolean> {
-        return this.root.locator(`p>a[href='${hrefText}']`).isVisible();
-    }
+    // async urlLinkTitleExists(hrefText: string): Promise<boolean> {
+    //     return this.root.locator(`p>a[href='${hrefText}']`).isVisible();
+    // }
 
-    async getInlineLinkTitle(hrefText: string): Promise<any> {
-        return this.root.locator(`[href^='${hrefText}'] [class^='smart-link-title']`).textContent();
-    }
+    // async getInlineLinkTitle(hrefText: string): Promise<any> {
+    //     return this.root.locator(`[href^='${hrefText}'] [class^='smart-link-title']`).textContent();
+    // }
 
-    async inlineLinkTitleExists(hrefText: string): Promise<boolean> {
-        return this.root.locator(`[href^='${hrefText}'] [class^='smart-link-title']`).isVisible();
-    }
+    // async inlineLinkTitleExists(hrefText: string): Promise<boolean> {
+    //     return this.root.locator(`[href^='${hrefText}'] [class^='smart-link-title']`).isVisible();
+    // }
 
-    async getCardLinkTitle(hrefText: string): Promise<any> {
-        return this.root.locator(`a[data-smart-element='Title'][href='${hrefText}']`).textContent();
-    }
+    // async getCardLinkTitle(hrefText: string): Promise<any> {
+    //     return this.root.locator(`a[data-smart-element='Title'][href='${hrefText}']`).textContent();
+    // }
 
-    async cardLinkTitleExists(hrefText: string): Promise<boolean> {
-        return this.root.locator(`a[data-smart-element='Title'][href='${hrefText}']`).isVisible();
-    }
+    // async cardLinkTitleExists(hrefText: string): Promise<boolean> {
+    //     return this.root.locator(`a[data-smart-element='Title'][href='${hrefText}']`).isVisible();
+    // }
 }
