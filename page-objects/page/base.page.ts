@@ -4,7 +4,7 @@ import { Link } from '../pageelement/link';
 export class BasePage {
     public readonly page: Page;
     public $link!: Link;
-    protected rootSelector: string;
+    protected rootSelector?: string;
 
     constructor(page: Page) {
         this.page = page;
